@@ -1,0 +1,333 @@
+type Query {
+  # Settings
+  settings: [Setting!]!
+  setting(key: String!): Setting
+
+  # Destinations
+  destinations(status: String, is_featured: Boolean): [Destination!]!
+  destination(id: Int!): Destination
+
+  # Team
+  teamMembers(status: String): [TeamMember!]!
+  teamMember(id: Int!): TeamMember
+
+  # Testimonials
+  testimonials(status: String, is_featured: Boolean): [Testimonial!]!
+  testimonial(id: Int!): Testimonial
+
+  # Inquiries
+  inquiries(status: String): [Inquiry!]!
+  inquiry(id: Int!): Inquiry
+
+  # Newsletter
+  newsletterSubscribers: [NewsletterSubscriber!]!
+
+  # Bookings
+  bookings(status: String): [Booking!]!
+  booking(id: Int!): Booking
+
+  # Offers
+  offers(status: String): [Offer!]!
+  offer(id: Int!): Offer
+
+  # Partners
+  partners(status: String): [Partner!]!
+  partner(id: Int!): Partner
+
+  # Auth
+  checkSetup: SetupResponse!
+  profile: Admin
+}
+
+type Mutation {
+  # Settings
+  updateSetting(key: String!, value: String!): MutationResponse!
+
+  # Destinations
+  createDestination(input: DestinationInput!): MutationResponse!
+  updateDestination(id: Int!, input: DestinationInput!): MutationResponse!
+  deleteDestination(id: Int!): MutationResponse!
+
+  # Team
+  createTeamMember(input: TeamMemberInput!): MutationResponse!
+  updateTeamMember(id: Int!, input: TeamMemberInput!): MutationResponse!
+  deleteTeamMember(id: Int!): MutationResponse!
+
+  # Testimonials
+  createTestimonial(input: TestimonialInput!): MutationResponse!
+  updateTestimonial(id: Int!, input: TestimonialInput!): MutationResponse!
+  deleteTestimonial(id: Int!): MutationResponse!
+
+  # Inquiries
+  submitInquiry(input: InquiryInput!): MutationResponse!
+  updateInquiry(id: Int!, input: InquiryUpdateInput!): MutationResponse!
+  deleteInquiry(id: Int!): MutationResponse!
+
+  # Newsletter
+  subscribeNewsletter(email: String!, name: String): MutationResponse!
+
+  # Bookings
+  createBooking(input: BookingInput!): MutationResponse!
+  updateBooking(id: Int!, input: BookingUpdateInput!): MutationResponse!
+  deleteBooking(id: Int!): MutationResponse!
+
+  # Offers
+  createOffer(input: OfferInput!): MutationResponse!
+  updateOffer(id: Int!, input: OfferInput!): MutationResponse!
+  deleteOffer(id: Int!): MutationResponse!
+
+  # Partners
+  createPartner(input: PartnerInput!): MutationResponse!
+  updatePartner(id: Int!, input: PartnerInput!): MutationResponse!
+  deletePartner(id: Int!): MutationResponse!
+
+  # Auth
+  setupAdmin(input: SetupAdminInput!): MutationResponse!
+  login(username: String!, password: String!): AuthResponse!
+  logout: MutationResponse!
+  changePassword(currentPassword: String!, newPassword: String!, confirmPassword: String!): MutationResponse!
+}
+
+# Response Types
+type MutationResponse {
+  status: String!
+  message: String!
+  data: String
+  errors: String
+}
+
+type AuthResponse {
+  status: String!
+  message: String!
+  data: Admin
+}
+
+type SetupResponse {
+  status: String!
+  needsSetup: Boolean!
+  message: String!
+}
+
+# Entity Types
+type Setting {
+  key: String!
+  value: String!
+  created_at: String
+  updated_at: String
+}
+
+type Destination {
+  id: Int!
+  name: String!
+  icon: String!
+  slug: String!
+  description: String
+  image_url: String
+  country: String
+  is_featured: Boolean!
+  status: String!
+  created_at: String
+  updated_at: String
+}
+
+type TeamMember {
+  id: Int!
+  name: String!
+  position: String!
+  bio: String
+  photo_url: String
+  email: String
+  phone: String
+  facebook: String
+  twitter: String
+  linkedin: String
+  instagram: String
+  display_order: Int
+  status: String!
+  created_at: String
+  updated_at: String
+}
+
+type Testimonial {
+  id: Int!
+  client_name: String!
+  client_position: String
+  client_photo: String
+  destination: String
+  rating: Int!
+  display_order: Int!
+  testimonial_text: String!
+  is_featured: Boolean!
+  status: String!
+  created_at: String
+  updated_at: String
+}
+
+type Inquiry {
+  id: Int!
+  name: String!
+  email: String!
+  phone: String
+  subject: String
+  message: String!
+  status: String!
+  created_at: String
+  updated_at: String
+}
+
+type NewsletterSubscriber {
+  id: Int!
+  email: String!
+  name: String
+  status: String!
+  subscribed_at: String
+  unsubscribed_at: String
+}
+
+type Booking {
+  id: Int!
+  name: String!
+  email: String
+  phone: String!
+  adults: Int!
+  children: Int
+  from_airport: String!
+  to_airport: String!
+  departure_date: String!
+  return_date: String
+  status: String
+  message: String
+  created_at: String
+  updated_at: String
+}
+
+type Offer {
+  id: Int!
+  title: String!
+  description: String
+  discount_percentage: Float
+  discount_amount: Float
+  code: String
+  valid_from: String
+  image_url: String
+  valid_until: String
+  status: String!
+  created_at: String
+  updated_at: String
+}
+
+type Partner {
+  id: Int!
+  name: String!
+  logo_url: String
+  website: String
+  description: String
+  display_order: Int
+  status: String!
+  created_at: String
+  updated_at: String
+}
+
+type Admin {
+  id: Int!
+  username: String!
+  email: String!
+  full_name: String!
+  role: String!
+  status: String!
+  last_login: String
+  created_at: String
+}
+
+# Input Types
+input DestinationInput {
+  name: String!
+  slug: String
+  description: String
+  country: String
+  display_order: Int
+  image_url: String
+  location: String
+  is_featured: Boolean
+  status: String
+}
+
+input TeamMemberInput {
+  full_name: String!
+  position: String!
+  bio: String
+  image: String
+  email: String
+  phone: String
+  social_links: String
+  display_order: Int
+  status: String
+}
+
+input TestimonialInput {
+  client_name: String!
+  client_location: String
+  client_image: String
+  rating: Int!
+  testimonial: String!
+  is_featured: Boolean
+  status: String
+}
+
+input InquiryInput {
+  name: String!
+  email: String
+  phone: String!
+  subject: String
+  message: String!
+}
+
+input InquiryUpdateInput {
+  status: String
+}
+
+input BookingInput {
+  name: String!
+  email: String
+  phone: String!
+  from_airport: String!
+  to_airport: String!
+  departure_date: String!
+  return_date: String
+  adults: Int!
+  children: Int
+  message: String
+}
+
+input BookingUpdateInput {
+  status: String
+}
+
+input OfferInput {
+  title: String!
+  description: String
+  discount_percentage: Float
+  discount_amount: Float
+  code: String
+  image_url: String,
+  display_order: Int,
+  valid_from: String
+  valid_until: String
+  status: String
+}
+
+input PartnerInput {
+  name: String!
+  logo_url: String
+  website: String
+  description: String
+  display_order: Int
+  status: String
+}
+
+input SetupAdminInput {
+  username: String!
+  email: String!
+  password: String!
+  full_name: String!
+}
